@@ -28,11 +28,12 @@ console.log(processFirstItem(['foo','bar'],function(str){return str+str}));
   Study the code for counter1 and counter2, then answer the questions below.
   
   1. What is the difference between counter1 and counter2?
-  
+      Counter 1 is using closure and updating the value inside of the closure while counter 2 is just using a function and updating the value inside of it.
   2. Which of the two uses a closure? How can you tell?
-  
+      counter1, it is using two funcions inside one another. It is using the first function to declare the initial count of 0 and the function inside of it (creating the closure) is updating the count.
   3. In what scenario would the counter1 code be preferable? In what scenario would 
      counter2 be better?  
+      Coming back to this.
 */
 
 // counter1 code
@@ -62,10 +63,21 @@ Use the inning function below to do the following:
 NOTE: This will be a callback function for the tasks below
 */
 
-function inning(/*Code Here*/){
-    /*Code Here*/
+function inning(){
+  let score = 0;
+  function innerFunc () {
+      let random = Math.random();
+      if (random >= .01 && random <= .33){
+        score = 0;
+      } else if (random > .33 && random <= .66){
+        score = 1;
+      } else if (random > .66 && random < 1){
+        score = 2;
+      }
+  return score;
 }
-
+return innerFunc();
+}
 
 /* ⚾️⚾️⚾️ Task 3: finalScore() ⚾️⚾️⚾️
 Use the finalScore function below to do the following:
@@ -81,17 +93,52 @@ Use the finalScore function below to do the following:
 }
 */ 
 
-function finalScore(/*code Here*/){
-  /*Code Here*/
+function finalScore(callback, inningsPlayed){
+  let allInningsHome = []
+  let allInningsAway = []
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    function homeScore() {
+      let inningCounter = 0;
+      while (inningCounter < inningsPlayed) {
+        let inningScore = inning();
+        allInningsHome.push(inningScore)
+        inningCounter++
+    }
+      let totalHomeTeamScore = allInningsHome.reduce(reducer);
+      console.log(totalHomeTeamScore);
+      return totalHomeTeamScore;
+  }
+  function awayScore() {
+      let inningCounter = 0;
+      while (inningCounter < inningsPlayed) {
+        let inningScore = inning();
+        allInningsAway.push(inningScore)
+        inningCounter++
+      }
+      let totalAwayTeamScore = allInningsAway.reduce(reducer);
+      console.log(totalAwayTeamScore);
+      return totalAwayTeamScore;
+  }
+    
+  let finalScoreTotal = {
+    Home: homeScore(),
+    Away: awayScore()
+    }
+    return finalScoreTotal;
 }
+
 
 /* ⚾️⚾️⚾️ Task 4: getInningScore() ⚾️⚾️⚾️
 Use the getInningScore() function below to do the following:
   1. Receive a callback function - you will pass in the inning function from task 2 as your argument 
   2. Return an object with a score for home and a score for away that populates from invoking the inning callback function */
 
-function getInningScore(/*Your Code Here */) {
-  /*Your Code Here */
+function getInningScore(callback) {
+  let inningScoreTotal = {
+    Home: inning(),
+    Away: inning()
+  }
+  return inningScoreTotal
 }
 
 
